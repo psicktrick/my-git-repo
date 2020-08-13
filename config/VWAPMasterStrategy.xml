@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<VWAPMasterStrategy>
+
+  
+  <!-- Set to Empty if using SymbolFile or SymbolFile = VolumeStats For Live Trading -->
+  <!-- <ABCDSymbolsAndDatesFile value=""/> -->
+  <!-- if ABCDSymbolsAndDatesFile = "", then use SymbolFile = VolumeStats or actual Symbol File Location to Create SymbolDate Combination -->
+  <!--Got error For this file   MDB_20191202-->
+  <!-- NxCore Debug File   D:\Trading\Resources\IqFeed\SymbolDates\Testing_20191202.csv-->
+  <!-- D:\Trading\Resources\IqFeed\SymbolDates\MSFT.csv 
+   D:\Trading\Resources\Symbols\LowFloat_20200205.csv -->
+  <!-- D:\Trading\Resources\IqFeed\SymbolDates\GapUpDn_20181029.csv -->
+  <!-- D:\Trading\Resources\IqFeed\SymbolDates\StatsAPI_GpUpDn1029.csv -->
+  <!-- <ABCDSymbolsAndDatesFile value="D:\Trading\TempDelete\IHEP_MissingSymbolDates.csv"/> -->
+  <!-- DP_sym_date MRK_MDB_20200205 ACHV_StatsAPI -->
+  <ABCDSymbolsAndDatesFile value= ""/>
+
+  <ExchangeStartTime value="09:30:00"/>
+  <!-- <ExchangeEndTime value="11:11:11" , <ExchangeEndTime value="16:00:00" -->
+  <!-- Also need to Reset ReplayStartTime and ReplayEndTime in MarketDataReaderIQ.xml beyond these times -->
+  <!-- <ExchangeEndTime value="16:10:00"/> -->
+  <ExchangeEndTime value="11:30:00"/>
+
+  <!-- ***************** IMPORTANT ************************** -->
+  <!-- During Live Trading, We use this Symbol File and Switch Off Individual Files -->
+  <!-- <SymbolFile value="..\Resources\Symbol\Equities\VWAP\VWAP_USA_ATVI.csv"/> -->
+
+  <!-- This file only has Symbols Not Dates -->
+  <!-- <SymbolFile value="C:\Trading\Resources\IqFeed\Symbols_20180815.csv"/> -->
+  <!-- Set SymbolFile = VolumeStats for Previous Day
+      to create the Symbol,Date Combination for Backteisng or Live Trading -->
+
+  <!-- If SymbolFile value = "VolumeStats", Set Parameters -->
+  <!-- C:\Trading\Resources\Symbols\Symbols_MD_20190215.csv -->
+  <!-- E:\Trading\Trading\MarketData\TickData\VolumeStats\VolumeStatsSymbols\MarketData\Symbols_MD.csv -->
+  <!-- D:\Trading\Resources\IqFeed\SymbolsOnly\PreMarketVolume_20200428.csv -->
+  <SymbolFile value="J:\Trading\LiveTrading\SymbolList\LowFloatSymbols_20200805.csv"/>
+  <!--  <SymbolFile value="C:\Trading\Resources\Symbols\Symbols_MD_20190215.csv"/> -->
+
+  <!--To check StatsAPI for the trade -->
+  <IsStatsAPI value="False" />
+  <!--MEGHANI (Used as a Proxy for StatsAPI True, so we can test quickly without an API File-->
+  <!-- When OrderExecutors is RealTime then, this is Set to False by Default -->
+
+  <!-- **** SUPER IMPORTANT - Check with Arindam Sir before setting this to True *** -->
+  <CheckStatsAPITesting value ="False"/>
+
+  <!-- IMPORTANT - MANDATORY PARAMETER FOR LIVE TRADING -->
+  <!--We are using this parameter to identify which type of rules do we need to pick for the trade, Mainly in BT-->
+  <!-- Earnings / Gappers / MiniGappers -->
+  <!-- Simulation: SymbolsList - Gappers, MiniGappers, Earnings -->
+  <DatasetType  value="Gappers" />
+
+  <!-- GpType Determination -->
+  <!-- GpUp-->
+  <GapUpPercentage value="2"/>
+  <!-- MiniGapper -->
+  <!-- GpDn -->
+  <GapDnPercentage value="-2"/>
+
+  <!--if value is False then this will be Use for stoping any new Entries due to risk trigger -->
+  <!-- Aslo need to set same roperty in ABCDStrategy.XML for each instrumentstrategy-->
+  <AlgoEnabled value="False"/>
+
+  <!-- SendTestOrder related quantity from ABCDstartegy grid-->
+  <SendTestOrderQty value="1" />
+  <TestOrderPassiveRate value="-5" />
+
+  <DirectionSignal value="LongShort"/>
+
+  <CreateVWAPStrategy value="False"/>
+  <VWAPStrategyConfigFile value="..\Config\VWAPStrategy.xml"/>
+  <!-- Earning Strategy Specs -->
+  <IsEarningsStrategy value="False"/>
+  <EarningsSymbolsAndDatesFile value="..\Resources\EarningsStrategy\EarningsSymbolsAndDates.csv"/>
+
+  <!-- Gap Strategy Specs -->
+  <IsGapStrategy value="False"/>
+  <GapSymbolsAndDatesFile value=""/>
+
+  <!-- *** ABCD Strategy Specs *** -->
+  <CreateABCDStrategy value="True"/>
+  <ABCDStrategyConfigFile value="..\Config\ABCDStrategy.xml"/>
+  <!-- ETB file path location -->
+
+  <!-- ********** PLEASE READ IMPORTANT:  SET TO EMPTY FOR BACKTESTING Or Variation Loader ********** -->
+
+  <!-- <ETBPath value="D:\Trading\ETB_VelocityLab\" /> -->
+  <ETBPath value="J:\Trading\ETB_inteseLab\ETB_138.207.64.30_new\ETB" />
+
+  <!-- IB_ETB_Path For Interactive Broker default value="" -->
+  <!-- IB_ETB_Path: Will have value in case of IB and ETBPath will be blank -->
+  <IB_ETB_Path value="J:\Trading\IB_ETB\IB_Rebate" />
+  <IB_ETB_RefreshTime value="09:29:00" />
+
+  <!-- AllowHTBEntrys It's True for IB / Simulator and it's False for Sterling  -->
+  <AllowHTBEntrys value="True" />
+
+  <!--To run all folders or run last folder at "ETBPath" and "IB_ETB_Path" location only-->
+  <IsRunETBLastFolder value="True" />
+
+  <!-- Borrow Database Request -->
+  <!-- HTB Borrow Stocks will be requested from IntenseLab -->
+  <!-- Phase 1: From Skype Quant Chat Group (1a. Simulation 1b. Live Trading) -->
+  <!-- Phase 2: Automatically from the API and updated in the Database -->
+
+  <!-- @Aman / @Munesh Add Database Connection Credentials here, if they are Empty do not connect to the database -->
+  <!-- This code will Crash if connection to DB cannot be connected -->
+  <!-- During Variation Loader, this should be False -->
+  <!-- When you get the BorrowRate Result, you will apply it BorrowRate Field in ABCDStrategy.xml (@Munesh), Remove 0.03 Cents Default and set it to 0 when this code is working -->
+  <!-- Borrow Rate from Skype Group: 0.0002 per share, Displayable BorrowRate (Always per 1000) = 0.0002 * 1000 = 0.2 for 1000 shares -->
+  <!-- Logger, Borrow Rate Logic (use the actual borrow rate in PT Calculations instead of per 1000) Actual borrow rate 0.0002 -->
+  <!-- Example: IFRX = 0.023 => (Displayable BorrowRate 23), AVGR = 0.032 => (32) -->
+  <!-- PT Calculations 0.023 and 0.032 -->
+  <!-- Pass the Current Date to the Stored Procedure -->
+  <!-- Config File Changes that need to be made -->
+  <!-- 20191030 commented by munesh as per discussion A K Sir-->
+  <!--<BorrowFromDB value="False"/>
+  <BorrowRequestFrequencySeconds value="60"/>-->
+
+
+  <!-- Logging and Reporting -->
+
+  <IsLogEnabled value="True"/>
+  <GenerateReports value="True"/>
+
+  <!-- GenerateTickStatsReports should be set to True, for creating TickStatsReport even in Variations Mode -->
+  <GenerateTickStatsReports value="False"/>
+
+  <!-- GenerateVolumeBars should be set to True, for creating 1 Min and 5 Min Raw Bars on PD1, PD2 and PD3 -->
+  <!-- Set it to False in Variations Mode if Intention is to run Variations -->
+  <GenerateVolumeBars value="False"/>
+
+  <!-- IMPORTANT: Insert Live Trading Account Here
+  <Account value="FIX_TEST006"/> -->
+  <!-- SIM, Sterling Demo Account IQIQDEMO001 Pass: 456456 -->
+  <Account value="TST1292CHPA2"/>
+
+  <!-- Bad Data Filters -->
+  <BadDataPercentage value="0.10"/>
+  <BadDataFile value="BadDataBySymbols.csv"/>
+
+  <!-- IMPORTANT: Insert Live Exchanges Here -->
+
+  <!-- Routing Parameters configured based on the ExecutionProvider -->
+  <!-- Sterling Demo only has Main Exchanges not Smart Routes -->
+
+  <!-- Backtest and Sterling Live: ARCA1  -->
+  <!-- Sterling DEMO: ARCA, Real Account is ARCA1 -->
+  <EntryExchange value="ARCA1"/>
+  <ExitExchange value="ARCA1"/>
+  <ExchangesPassive value="ARCA1"/>
+  <ExchangesAggressive value="ARCA1"/>
+
+  <!--<EntryExchange value="SMART"/>
+  <ExitExchange value="NSDQ"/>
+  <ExchangesPassive value="ARCA,NSDQ,BATS,EDGX"/>
+  <ExchangesAggressive value="ARCA,NSDQ,BATS"/>-->
+
+  <!-- Plotting and Charting, Set ChartingEnabled True when verifying Charts -->
+  <!-- Sachin 20190614 Charting  -->
+  <ChartingEnabled value="True"/>
+
+  <!-- Used for Test Cases in the Code during Debug and Strategy Creation -->
+  <PlotTesting value="True"/>
+
+  <PlotSymbolData value="False"/>
+
+  <PlotOpeningRangeDailyHighLowStats value="False"/>
+
+  <PlotBar value="True"/>
+  <PlotBarVWAP value="False"/>
+  <PlotPreMarket value="True"/>
+
+  <PlotBidAsk value="False" />
+
+  <!-- Set to True to Calculate Retracements in ABCD Strategy -->
+  <!-- Bid Ask Spread -->
+  <PlotAvgRollingAvgEstCurrentBidAskSpread value="False"/>
+
+  <!-- Plot PreMarket and OpeningVolume And OpeningPrint -->
+  <PlotPreMarketAndOpenVol value="False"/>
+
+  <PlotVWAP value="True"/>
+
+  <!-- Makes the Intraday Chart Resolution very small -->
+  <PlotPDClose1 value="False"/>
+
+  <!-- Munesh 20190829-->
+  <!-- Plot Volume of every one minutes Variables-->
+  <PlotAllExchangeVolEveryMint value="True"/>
+
+  <PlotOpeningRange value="False"/>
+  <PlotOpeningRangeBand value="False"/>
+  <PlotPriceVWAPVelocityMean value="True"/>
+  <PlotPriceVWAPVelocity1SD value="False"/>
+  <PlotPriceVWAPVelocity2SD value="True"/>
+  <PlotPriceVWAPVelocity3SD value="False"/>
+  <PlotVWAP1SD value="False"/>
+  <PlotVWAP2SD value="False"/>
+  <PlotVWAP3SD value="False"/>
+  <PlotVWAPAcceleration value="False"/>
+  <PlotVWAPAcceleration1SD value ="False"/>
+  <PlotVWAPAcceleration2SD value ="False"/>
+  <PlotVWAPAcceleration3SD value ="False"/>
+  <PlotBuySellVWAP value="False" />
+
+  <PlotBarVolume value="True"/>
+  <PlotVolumeMA value="False"/>
+  <PlotVolume1SD value="False"/>
+  <PlotVolume2SD value="False"/>
+  <PlotVolume3SD value="False"/>
+
+  <PlotUpDownVolume value ="False"/>
+  <PlotUpDownVolumeDiff value="False"/>
+
+  <PlotCurrentUpDnBarVolume value="False"/>
+
+  <PlotAccumulatedUpDnBarVolume value="False"/>
+
+  <PlotUpBarVolumeRatio value="False"/>
+
+  <PlotDnBarVolumeRatio value="False"/>
+
+  <PlotHH1Complete value="False"/>
+  <PlotLL1Complete value="False"/>
+
+  <PlotVWAPVelocity value="False"/>
+  <PlotVWAPVelocityMA value="False"/>
+  <PlotVWAPVelocity1SD value="False"/>
+  <PlotVWAPVelocity2SD value="False"/>
+  <PlotVWAPVelocity3SD value="False"/>
+  <PlotVWAPPower value="False"/>
+
+  <!-- Useful for Testing Execution API -->
+  <PlotOrderAck value="False"/>
+  <PlotOrderCancel value="False"/>
+  <PlotOrderFill value ="False"/>
+  <PlotStopLoss value="False"/>
+
+  <!-- 20191121 IsDetailedLogging property has been moved from ABCDStrategy.xml because we had no instance of this property into VelocityMasterStrategy.cs -->
+  <IsDetailedLogging value="False"/>
+
+  <!-- True for live -->
+  <IsLoggging value="False" />
+
+  <!-- *** DANGEROUS (FALSE IN VL AND LIVE)  VERY IMPORTANT: *** Set this to True only when Debugging -->
+  <IsDevelopmentDetailedLogging value="False" />
+
+
+
+</VWAPMasterStrategy>

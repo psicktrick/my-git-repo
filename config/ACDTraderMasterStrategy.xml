@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- *** Debug *** -->
+<!-- <LookBackPeriod value = "2"/> -->
+<!-- *** Live -->
+<!-- <LookBackPeriod value = "5"/>-->
+<!-- *** China ***
+<MaxTradeSizeSymbolsFile value="..\Resources\China\Futures\ChinaMaxTradeSizeSymbols.csv"/>
+<SymbolFile value="..\Resources\China\Futures\ACD\Debug\ACD_China_Crossed_Momentum.csv"/> 
+-->
+<!-- *** US ***
+<MaxTradeSizeSymbolsFile value="..\Resources\Symbol\Equities\MaxTradeSizeSymbols.csv"/>
+<SymbolFile value="..\Resources\Symbol\Equities\ACD\ACD_USA_Established_Momentum_0930_1600.csv"/>
+*** -->
+<!-- *** FOREX ***
+<MaxTradeSizeSymbolsFile value="*"/> 
+<SymbolFile value="..\Resources\Symbol\FOREX\ACD\Crossed_Momentum_0930_1600_EURUSD.csv"/>
+<SymbolFile value="..\Resources\Symbol\FOREX\ACD\Crossed_Momentum_0300_0800_AllMajors_Backtest.csv"/>
+*** -->
+<!-- *** ACD Stats Recorder ***
+<MaxTradeSizeSymbolsFile value="*"/>
+<SymbolFile value="..\Resources\Symbol\Equities\ACD\RecorderSymbols_0930_1600_TSLA.csv"/>
+*** -->
+<ACDTraderMasterStrategy>
+  <LookBackPeriod value ="10"/>
+  <CoefLookBackPeriod value="5"/>
+  <MaxTradeSizeSymbolsFile value="*"/>
+  <SymbolFile value="..\Resources\Symbol\Equities\ACD\ACD_USA_Crossed_Momentum_0930_1600_Sample3000.csv"/>
+  <GenerateReports value="True"/>
+  <DestinationDirectory value="..\..\Results\ACD\"/>
+  <IsLogEnabled value="True"/>
+  <Model value=""/>
+  <Suffix value="" />
+  <BadDataPercentage value="0.10"/>
+  <BadDataFile value="BadDataBySymbols.csv"/>
+  <MaxTradeSize value="1000"/>
+  <SecuritiesInfoFile value="..\Resources\China\ChinaSecuritiesInfo.csv"/>
+  <GetContinuousContracts value="False"/>
+  <RootSymbolFile value="..\Resources\China\Futures\ACD\RootTradingSymbols.csv"/>
+</ACDTraderMasterStrategy>
